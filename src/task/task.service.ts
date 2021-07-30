@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { EntityRepository, wrap } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { validate } from 'class-validator';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Task } from './task.entity';
 
 @Injectable()
 export class TaskService {
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+  constructor(
+    @InjectRepository(Task)
+    private readonly taskRepository: EntityRepository<Task>,
+  ) {}
+
+  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+    const { title, estimatedTime } = createTaskDto;
+
+    // create new task
+    const task = new Task(title, estimatedTime);
+    const errors = await validate(task);
+
+    if (errors.length > 0) {
+      throw new HttpException(
+        {
+          message: 'Input data validation failed',
+          errors: { title: 'User input is not valid.' },
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    } else {
+      await this.taskRepository.persistAndFlush(task);
+      return task;
+    }
   }
 
-  findAll() {
-    return `This action returns all task`;
+  async findAll(): Promise<Task[]> {
+    return this.taskRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findOne(id: number): Promise<Task> {
+    return this.taskRepository.findOne(id);
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    const task = await this.taskRepository.findOne(id);
+    wrap(task).assign(updateTaskDto);
+    await this.taskRepository.flush();
+
+    return task;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(id: number): Promise<number> {
+    return this.taskRepository.nativeDelete({ id });
   }
 }
