@@ -1,5 +1,4 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import crypto from "crypto";
 
 @Entity()
 export class Project {

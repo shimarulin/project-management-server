@@ -53,7 +53,7 @@ export class ProjectService {
     return project;
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<number> {
     return this.projectRepository.nativeDelete({ id });
   }
 }
