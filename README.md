@@ -2,25 +2,29 @@
 
 ## Description
 
-Project management server build with TypeScript, NestJS and MicroORM.
+Project management server build with TypeScript, REST API powered by [NestJS](https://nestjs.com/) and [MikroORM](https://mikro-orm.io/) using SQLite under hood.
 
 ## Installation
 
-```bash
-$ npm install
-```
+1. Install dependencies via `yarn`
+2. Create DB schema via `npx mikro-orm schema:create -r`
+3. Run via `yarn start` or `yarn start:dev` (watch mode) or `yarn start:debug`
+4. Example API is running on localhost:3001
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ yarn start
 
 # watch mode
-$ npm run start:dev
+$ yarn start:dev
+
+# debug mode (like watch but with NodeJS debugger)
+$ yarn start:debug
 
 # production mode
-$ npm run start:prod
+$ yarn start:prod
 ```
 
 ## Test
@@ -36,16 +40,6 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This code is available under the [MIT license](LICENSE).
