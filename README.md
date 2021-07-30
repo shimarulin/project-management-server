@@ -9,7 +9,7 @@ Project management server build with TypeScript, REST API powered by [NestJS](ht
 1. Install dependencies via `yarn`
 2. Create DB schema via `npx mikro-orm schema:create -r`
 3. Run via `yarn start` or `yarn start:dev` (watch mode) or `yarn start:debug`
-4. Example API is running on localhost:3001
+4. Example API is running on http://localhost:3000/api/v1
 
 ## Running the app
 
