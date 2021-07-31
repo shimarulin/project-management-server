@@ -5,19 +5,24 @@ import { validate } from 'class-validator';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './task.entity';
+import { Project } from '../project/project.entity';
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectRepository(Task)
     private readonly taskRepository: EntityRepository<Task>,
+
+    @InjectRepository(Project)
+    private readonly projectRepository: EntityRepository<Project>,
   ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    const { title, estimatedTime } = createTaskDto;
+    const { projectId, title, estimatedTime } = createTaskDto;
+    const project = await this.projectRepository.findOne({ id: projectId });
 
     // create new task
-    const task = new Task(title, estimatedTime);
+    const task = new Task(project, title, estimatedTime);
     const errors = await validate(task);
 
     if (errors.length > 0) {

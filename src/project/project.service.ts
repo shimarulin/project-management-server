@@ -5,12 +5,16 @@ import { validate } from 'class-validator';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './project.entity';
+import { Task } from '../task/task.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: EntityRepository<Project>,
+
+    @InjectRepository(Task)
+    private readonly taskRepository: EntityRepository<Task>,
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
@@ -35,11 +39,11 @@ export class ProjectService {
   }
 
   async findAll(): Promise<Project[]> {
-    return this.projectRepository.findAll();
+    return this.projectRepository.findAll(['tasks']);
   }
 
   async findOne(id: number): Promise<Project> {
-    return this.projectRepository.findOne(id);
+    return this.projectRepository.findOne(id, ['tasks']);
   }
 
   async update(
@@ -54,6 +58,8 @@ export class ProjectService {
   }
 
   async remove(id: number): Promise<number> {
+    await this.taskRepository.nativeDelete({ project: id });
+
     return this.projectRepository.nativeDelete({ id });
   }
 }
