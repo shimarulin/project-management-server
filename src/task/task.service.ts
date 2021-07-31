@@ -21,6 +21,16 @@ export class TaskService {
     const { projectId, title, estimatedTime } = createTaskDto;
     const project = await this.projectRepository.findOne({ id: projectId });
 
+    if (!project) {
+      throw new HttpException(
+        {
+          message: 'Input data validation failed',
+          errors: { projectId: 'User input is not valid.' },
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     // create new task
     const task = new Task(project, title, estimatedTime);
     const errors = await validate(task);
