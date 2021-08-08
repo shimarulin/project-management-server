@@ -18,7 +18,14 @@ export class TaskService {
   ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    const { projectId, title, estimatedTime } = createTaskDto;
+    const {
+      projectId,
+      title,
+      estimatedTime,
+      executor,
+      estimatedTimeMin,
+      estimatedTimeMax,
+    } = createTaskDto;
     const project = await this.projectRepository.findOne({ id: projectId });
 
     if (!project) {
@@ -32,7 +39,14 @@ export class TaskService {
     }
 
     // create new task
-    const task = new Task(project, title, estimatedTime);
+    const task = new Task(
+      project,
+      title,
+      estimatedTime,
+      executor,
+      estimatedTimeMin,
+      estimatedTimeMax,
+    );
     const errors = await validate(task);
 
     if (errors.length > 0) {

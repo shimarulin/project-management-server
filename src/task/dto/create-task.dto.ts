@@ -8,4 +8,10 @@ export class CreateTaskDto {
   readonly title: string;
 
   readonly estimatedTime?: string;
+
+  readonly executor?: number;
+
+  readonly estimatedTimeMin?: number;
+
+  readonly estimatedTimeMax?: number;
 }
