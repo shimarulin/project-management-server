@@ -10,13 +10,13 @@ export class Task extends BaseEntity {
   @Property({ nullable: true })
   estimatedTime: string;
 
-  @Property()
+  @Property({ nullable: true })
   executor: number;
 
-  @Property()
+  @Property({ nullable: true })
   estimatedTimeMin: number;
 
-  @Property()
+  @Property({ nullable: true })
   estimatedTimeMax: number;
 
   @ManyToOne(() => Project)

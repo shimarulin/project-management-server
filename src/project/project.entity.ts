@@ -13,10 +13,10 @@ export class Project extends BaseEntity {
   @Property()
   title: string;
 
-  @Property()
+  @Property({ nullable: true })
   description: string;
 
-  @Property()
+  @Property({ nullable: true })
   client: string;
 
   @OneToMany(() => Task, (task) => task.project)
