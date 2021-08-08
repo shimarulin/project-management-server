@@ -18,10 +18,10 @@ export class ProjectService {
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
-    const { title } = createProjectDto;
+    const { title, description, client } = createProjectDto;
 
     // create new project
-    const project = new Project(title);
+    const project = new Project(title, description, client);
     const errors = await validate(project);
 
     if (errors.length > 0) {

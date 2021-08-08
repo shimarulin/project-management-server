@@ -13,11 +13,19 @@ export class Project extends BaseEntity {
   @Property()
   title: string;
 
+  @Property()
+  description: string;
+
+  @Property()
+  client: string;
+
   @OneToMany(() => Task, (task) => task.project)
   tasks = new Collection<Task>(this);
 
-  constructor(title: string) {
+  constructor(title: string, description?: string, client?: string) {
     super();
     this.title = title;
+    this.description = description;
+    this.client = client;
   }
 }
